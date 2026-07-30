@@ -285,7 +285,6 @@ def _register_tools(registry):
         },
         handler=lambda args, **kw: qidi_q2_print_cancel(task_id=kw.get("task_id")),
         check_fn=_check_qidi_q2,
-        dangerous=True,
     )
     reg(
         name="qidi_q2_emergency_stop",
@@ -297,7 +296,6 @@ def _register_tools(registry):
         },
         handler=lambda args, **kw: qidi_q2_emergency_stop(task_id=kw.get("task_id")),
         check_fn=_check_qidi_q2,
-        dangerous=True,
     )
 
     # Tuning
@@ -468,7 +466,6 @@ def _register_tools(registry):
             filename=args.get("filename", ""), task_id=kw.get("task_id")
         ),
         check_fn=_check_qidi_q2,
-        dangerous=True,
     )
     reg(
         name="qidi_q2_filament_estimate",
@@ -534,7 +531,6 @@ def _register_tools(registry):
         },
         handler=lambda args, **kw: qidi_q2_restart_klipper(task_id=kw.get("task_id")),
         check_fn=_check_qidi_q2,
-        dangerous=True,
     )
     reg(
         name="qidi_q2_ssh",
