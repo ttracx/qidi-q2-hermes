@@ -130,6 +130,11 @@ def set_print_speed(
         percent: Speed percentage (50-200 typical range).
     """
     client = client or MoonrakerClient()
+    if not 50 <= percent <= 200:
+        return json.dumps({
+            "success": False,
+            "error": "Print speed must be between 50% and 200%.",
+        })
     try:
         client.gcode(f"M220 S{percent}")
         return f"Print speed set to {percent}%"
@@ -147,6 +152,11 @@ def set_flow_rate(
         percent: Flow percentage (90-110 typical range).
     """
     client = client or MoonrakerClient()
+    if not 90 <= percent <= 110:
+        return json.dumps({
+            "success": False,
+            "error": "Flow rate must be between 90% and 110%.",
+        })
     try:
         client.gcode(f"M221 S{percent}")
         return f"Flow rate set to {percent}%"
@@ -166,11 +176,26 @@ def set_temperature(
         temperature: Target temperature in °C.
     """
     client = client or MoonrakerClient()
+    normalized_heater = heater.lower()
+    limits = {"hotend": 300, "extruder": 300, "bed": 120}
+    if normalized_heater not in limits:
+        return json.dumps({
+            "success": False,
+            "error": f"Unknown heater: {heater}. Use 'hotend' or 'bed'.",
+        })
+    if not 0 <= temperature <= limits[normalized_heater]:
+        return json.dumps({
+            "success": False,
+            "error": (
+                f"{normalized_heater} temperature must be between 0°C and "
+                f"{limits[normalized_heater]}°C."
+            ),
+        })
     try:
-        if heater.lower() in ("hotend", "extruder"):
+        if normalized_heater in ("hotend", "extruder"):
             client.gcode(f"M104 S{temperature}")
             return f"Hotend target set to {temperature}°C"
-        elif heater.lower() == "bed":
+        elif normalized_heater == "bed":
             client.gcode(f"M140 S{temperature}")
             return f"Bed target set to {temperature}°C"
         else:
@@ -192,6 +217,11 @@ def set_fan_speed(
         percent: Fan speed 0-100%.
     """
     client = client or MoonrakerClient()
+    if not 0 <= percent <= 100:
+        return json.dumps({
+            "success": False,
+            "error": "Fan speed must be between 0% and 100%.",
+        })
     try:
         speed = int(percent * 255 / 100)  # Convert % to PWM value
         client.gcode(f"M106 S{speed}")
@@ -210,13 +240,19 @@ def home_axes(
         axes: 'XYZ' to home all, or specific axes like 'X', 'Y', 'Z', 'XY'.
     """
     client = client or MoonrakerClient()
+    normalized_axes = axes.upper()
+    if normalized_axes not in {"X", "Y", "Z", "XY", "XZ", "YZ", "XYZ"}:
+        return json.dumps({
+            "success": False,
+            "error": "Axes must be a non-repeating combination of X, Y, and Z.",
+        })
     try:
-        if axes.upper() == "XYZ":
+        if normalized_axes == "XYZ":
             client.gcode("G28")
             return "Homing all axes (XYZ)"
         else:
-            client.gcode(f"G28 {axes}")
-            return f"Homing {axes}"
+            client.gcode(f"G28 {normalized_axes}")
+            return f"Homing {normalized_axes}"
     except MoonrakerError as e:
         return json.dumps({"success": False, "error": str(e)})
 
