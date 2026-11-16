@@ -1,5 +1,9 @@
 # Hermes + Qidi Q2 3D Printer Integration
 
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![THOX.ai](https://img.shields.io/badge/THOX.ai-LLC-red.svg)
+![Repository](https://img.shields.io/badge/repository-ttracx%2Fqidi--q2--hermes-0B1220)
+
 Full end-to-end integration between Hermes Agent and the Qidi Q2 3D printer. Control your printer via natural language — check status, start prints, monitor progress, capture timelapses, manage files, and receive proactive alerts.
 
 Built on **Moonraker** (port 7125) + **Klipper** — the stock Qidi Q2 firmware exposes a complete Moonraker API that Hermes can call directly.
@@ -212,3 +216,17 @@ Once set up, these all work out of the box:
 ## License
 
 MIT - THOX.ai
+
+---
+
+## Legal
+
+Copyright (c) 2024-2026 THOX.ai LLC. All rights reserved.
+
+**THOX.ai LLC**
+- CTO: Tommy Xaypanya
+- CEO: Craig Ross
+
+Licensed under the MIT License. See [LICENSE](LICENSE) for details.
+
+Unauthorized copying, modification, merger, publication, distribution, sublicensing, and/or selling of this software, via any medium, is strictly prohibited without prior written consent from THOX.ai LLC.
